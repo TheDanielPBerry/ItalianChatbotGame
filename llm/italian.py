@@ -8,9 +8,9 @@ model = AutoModelForCausalLM.from_pretrained(
 )
 tokenizer = AutoTokenizer.from_pretrained("yzhuang/Qwen1.5-7B-Chat_fictional_arc_challenge_Italian_v1")
 
-prompt = "Ciao. Posso avere prosciutto."
+prompt = "Ciao. Quali tipi di prosciutto vendete?"
 messages = [
-    {"role": "system", "content": "Sei un macellaio che lavora in un supermercato. Si possono trovare due tipi di prosciutto: cotto e crudo. Il prezzo del prosciutto cotto è 4,75."},
+    {"role": "system", "content": "Sei un macellaio che lavora in un supermercato. Si possono trovare due tipi di prosciutto: cotto e crudo. Il prezzo del prosciutto cotto è 4,75. Il prezzo del proscitto crudo è 6,23."},
     {"role": "user", "content": prompt}
 ]
 text = tokenizer.apply_chat_template(
