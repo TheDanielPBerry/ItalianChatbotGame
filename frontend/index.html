@@ -2,9 +2,22 @@
 <html lang="it">
 	<head>
 		<title>Vita Italiana</title>
+		<link rel="stylesheet" href="css/game.css" />
 	</head>
 	<body>
 		<canvas id="canvas" width="512" height="512"></canvas>
+		<div id="chat">
+			<div id="chat-history">
+				<p class="client">
+					Quanta costa il prosiciutto cotto?
+				</p>
+				<p class="chatbot">
+					Il proscitto &egrave; &euro;4,75.
+				</p>
+			</div>
+			<textarea id="input" rows="4" autofocus></textarea>
+		</div>
 		<script src="js/game.js"></script>
+		<script src="js/chat.js"></script>
 	</body>
 </html>

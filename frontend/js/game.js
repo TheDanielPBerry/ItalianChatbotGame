@@ -105,7 +105,7 @@ function DrawScene() {
 		}
 		artifact.draw(ctx);
 	});
-	if(typeof(focus) !== 'undefined') {
+	if(focus !== null && typeof(focus) !== 'undefined') {
 		ctx.globalAlpha = 0.8;
 		let label = focus.name;
 		ctx.font = '20px Georgia';
