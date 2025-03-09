@@ -1,28 +1,16 @@
-FROM debian:latest AS deepseek
+FROM php:8.2-apache AS php-apache-composer 
 
-WORKDIR /app
+WORKDIR /var/www/html
 
-RUN apt-get update && apt-get -y install python3 pip
-RUN apt-get -y install wget
-RUN wget https://gist.githubusercontent.com/TheDanielPBerry/ffb6dbe950f3b2205ec80c322c6075fd/raw/97d62d3f15dcab52bff48c4fd9f7234dd61dd75b/.vimrc -O ~/.vimrc
-COPY ./DeepSeek-LLM /app/DeepSeek-LLM
+RUN apt-get update && apt-get install -y curl sqlite3
 
-RUN apt-get -y install python3.11-venv
-RUN python3 -m venv .
+RUN curl -sS https://getcomposer.org/installer -o /tmp/composer-setup.php
+RUN HASH=`curl -sS https://composer.github.io/installer.sig`
+RUN php -r "if (hash_file('SHA384', '/tmp/composer-setup.php') === '$HASH') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;"
 
-RUN apt-get -y install coreutils vim
+RUN php /tmp/composer-setup.php --install-dir=/usr/local/bin --filename=composer
 
-RUN bin/pip install transformers
-RUN bin/pip install torch
-RUN bin/pip install torch>=2.0
-RUN bin/pip install tokenizers>=0.14.0
-RUN bin/pip install transformers>=4.35.0
-RUN bin/pip install accelerate
-RUN bin/pip install sympy==1.12
-RUN bin/pip install pebble
-RUN bin/pip install timeout-decorator
-RUN bin/pip install attrdict
+RUN apt-get install -y git
 
-
-
-ENTRYPOINT ["sleep", "infinity"]
+RUN service apache2 start
+CMD ["apachectl", "-D", "FOREGROUND"]

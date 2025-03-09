@@ -1,14 +1,15 @@
 version: "3.0"
 services:
-  deepseek:
-    container_name: deepseek
-    image: deepseek
+  VivaItaliana:
+    container_name: VivaItaliana
+    image: php-apache-composer
     build:
       context: .
-      target: deepseek
+      target: php-apache-composer
       dockerfile: Dockerfile
     volumes: 
-      - ./:/app
+      - ./app:/var/www/html
+      - ./db:/var/www/db
     ports: 
       - 80:80
       - 443:443

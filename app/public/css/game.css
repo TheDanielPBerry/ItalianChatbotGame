@@ -1,0 +1,56 @@
+@keyframes fadeIn {
+	0% { max-height: 0; }
+	100% { max-height: 100px; }
+}
+.no-select {
+	-webkit-touch-callout: none; /* iOS Safari */
+	-webkit-user-select: none; /* Safari */
+	-khtml-user-select: none; /* Konqueror HTML */
+	-moz-user-select: none; /* Old versions of Firefox */
+	-ms-user-select: none; /* Internet Explorer/Edge */
+	user-select: none; /* Non-prefixed version, currently supported by Chrome, Edge, Opera and Firefox */
+}
+
+canvas {
+	display: inline-block;
+}
+textarea#input {
+	width: 100%;
+	font-size: 1.4em;
+	padding: 0.5em;
+	resize: none;
+}
+#chat {
+	display: inline-block;
+}
+#chat-history {
+	overflow-x: hidden;
+	overflow-y: scroll;
+	max-height: 30vh;
+	min-height: 30vh;
+	max-width: 80vw;
+	min-width: 80vh;
+}
+#chat-history p {
+	max-width: 80%;
+	min-width: 80%;
+	padding: 0.4em;
+	color: #fff;
+	font-size: 1.4em;
+	animation: fadeIn 1s;
+	border-radius: 0.3em;
+}
+#chat-history .chatbot {
+	background-color: #c24;
+	float: left;
+}
+#chat-history .client {
+	background-color: #42c;
+	float: right;
+}
+
+.chat-descriptor {
+	display: block;
+	font-size: 0.8em;
+	font-style: italic;
+}
