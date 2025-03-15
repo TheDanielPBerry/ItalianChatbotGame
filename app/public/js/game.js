@@ -111,6 +111,8 @@ function DrawScene() {
 function InitializeGame() {
 	wipe = new Point(-canvas.width, 0);
 	scenes['residential']();
+	currentChatDescriptor = 'La Vita Italiana';
+	AddHistory(`Benvenuti al gioco. <a class="help-link" onclick="OpenModal('help_modal')">Clicca qui per ricevere aiuto.</a>`, 'narrator', '');
 }
 
 function GetInteractiveArtifact(pos) {

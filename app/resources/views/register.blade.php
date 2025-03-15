@@ -2,7 +2,7 @@
 @section('content')
 
 <link rel="stylesheet" href="{{ url('/css/login.css') }}" />
-<hr />
+
 <h2 class="text-center form-title">
 	Create an account to start practicing your Italian
 </h2>
@@ -43,6 +43,16 @@
 		name="password_confirmation"
 		id="password_confirmation"
 		/>
+
+	<div class="form-row">
+		<div class="error-container">
+			{{ $errors->register->first('agree_contribute') }}
+		</div>
+		<input type="checkbox" name="agree_contribute" id="agree_contribute" value="1" />
+		<label for="agree_contribute" class="cursor">
+			I agree to allow "La Vita Italiana" to use my chat history to help improve the application experience.
+		</label>
+	</div>
 
 	<p class="error-container hide" id="validate-msg"></p>
 

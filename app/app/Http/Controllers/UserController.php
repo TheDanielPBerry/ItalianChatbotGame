@@ -6,6 +6,7 @@ use App\Models\User;
 
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rules\Password;
+use Illuminate\Validation\Rules\Numeric;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -57,7 +58,12 @@ class UserController extends Controller
 			'password' => [
 				'required',
 				'confirmed',
-				Password::min(8)->numbers()->letters()->symbols(), 'confirmed'],
+				Password::min(8)->numbers()->letters()->symbols(), 'confirmed'
+			],
+			'agree_contribute' => [
+				'required',
+				'integer',
+			],
 		]);
 
 
@@ -76,10 +82,10 @@ class UserController extends Controller
 		$user->name = $validated['fullname'];
 		$user->email = $validated['email'];
 		$user->password = Hash::make($validated['password']);
+		$user->conversation_token = base64_encode(random_bytes(16));
 		$user->save();
 
-
-
+		Auth::login($user);
 		return redirect('game');
 	}
 }

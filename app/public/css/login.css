@@ -7,7 +7,7 @@ form {
 	max-width: 600px;
 	grid-template-columns: auto auto auto auto auto auto auto auto auto auto auto auto;
 	font-size: 1.2em;
-	background-color: #888;
+	background-color: #ccc;
 	row-gap: 1.5em;
 	column-gap: 0.5em;
 	padding: 2em;
@@ -28,6 +28,11 @@ form input {
 	padding: 0.4em;
 	font-size: 1.2em;
 	grid-column: 3/12;
+}
+form input[type=checkbox] {
+	height: 1em;
+	width: 1em;
+	cursor: pointer;
 }
 form div.submit {
 	grid-column: 1 / span 12;

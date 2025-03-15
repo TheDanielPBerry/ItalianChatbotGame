@@ -1,7 +1,6 @@
 @extends('layouts.default')
 @section('content')
 <link rel="stylesheet" href="css/login.css" />
-<hr />
 <h2 class="text-center form-title">
 	Sign in to start practicing your Italian
 </h2>

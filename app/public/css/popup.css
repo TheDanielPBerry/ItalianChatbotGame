@@ -1,0 +1,42 @@
+.overlay {
+	top: 0px;
+	left: 0px;
+	width: 100vw;
+	height: 100vh;
+	background-color: #4444;
+	position: fixed;
+	overflow: hidden;
+	z-index: 100;
+}
+.modal {
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 1vh;
+	padding: 1.5em;
+	background-color: #eee;
+	border-radius: 1em;
+	max-height: 95vh;
+	min-height: 10vh;
+	max-width: 50%;
+}
+.modal-title {
+	text-align: center;
+	font-size: 1.8em;
+	font-weight: bold;
+}
+.modal-body {
+	overflow-x: hidden;
+	overflow-y: auto;
+	max-height: 88vh;
+	border: 1px solid #9991;
+	border-radius: 0.5em;
+}
+.modal-close {
+	float: right;
+	cursor: pointer;
+	color: #888;
+	transition: opacity 0.2s;
+}
+.modal-close:hover {
+	opacity: 0.6;
+}

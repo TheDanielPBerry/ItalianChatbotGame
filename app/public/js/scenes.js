@@ -31,17 +31,17 @@ const scenes = {
 		scene = [];
 		scene.push(new Artifact(null, new Rect(0, 0, null, null), "/img/characters/butcher.png"));
 		scene.push(new Interactive(null, new Rect(440, 8, null, null), "/img/ciao.png", "Abbandonare la Conversazione", scenes['grocery']));
-		clickEvent = null
+		clickEvent = null;
 		LoadChat('Macellaio');
-		AddHistory('Ciao!', 'chatbot');
+		AddHistory('Ciao!', 'chatbot', 0);
 	},
 	'clerk': () => {
 		scene = [];
 		scene.push(new Artifact(null, new Rect(0, 0, null, null), "/img/characters/clerk.png"));
 		scene.push(new Interactive(null, new Rect(440, 8, null, null), "/img/ciao.png", "Abbandonare la Conversazione", scenes['grocery']));
-		clickEvent = null
+		clickEvent = null;
 		LoadChat('Cassiere');
-		AddHistory('Ciao! Com\'era il tuo esperianza oggi?', 'chatbot');
+		AddHistory('Ciao! Com\'era il tuo esperianza oggi?', 'chatbot', 0);
 	},
 };
 
