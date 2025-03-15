@@ -77,3 +77,39 @@ textarea#input {
 .help-link:hover {
 	text-shadow: 0px 0px 3px #eee5;
 }
+#feedback-form {
+	padding: 0.3em;
+	text-align: center;
+}
+#feedback-form select {
+	font-size: 1.4em;
+	padding: 0.2em;
+	resize: none;
+	display: block;
+	border-radius: 0.1em;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 1em;
+	cursor: pointer;
+}
+#feedback-form textarea {
+	width: 90%;
+	font-size: 1.4em;
+	padding: 0.5em;
+	resize: none;
+	display: block;
+	margin: 1em;
+}
+#feedback-form button {
+	background-color: #222299;
+	color: #fff;
+	border: 0px;
+	padding: 0.6em;
+	border-radius: 0.2em;
+	cursor: pointer;
+	width: 50%;
+	font-size: 1.1em;
+}
+form .error {
+	border: 1px solid #E00;
+}

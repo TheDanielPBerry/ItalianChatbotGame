@@ -8,6 +8,7 @@ enum FeedbackType: int {
 	case OFFENSIVE = 0;
 	case INCORRECT = 1;
 	case IMPROVEMENT = 2;
+	case OTHER = 3;
 };
 
 class Feedback extends Model

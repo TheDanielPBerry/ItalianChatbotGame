@@ -58,10 +58,11 @@ class GameController extends Controller
 		if(empty($grammar_analysis['error'])) {
 			$message->grammar_response = $grammar_analysis['output'][0]['content'][0]['text'];
 		} else {
-			$message->grammar_response = $grammar_analysis;
+			$message->grammar_response = '';
 		}
 		if(trim(strtolower($message->grammar_response)) === 'english') {
 			$prediction = 'Mi dispiace, non so parlare inglese.';
+			$grammar_response = '';
 		} else {
 			$prediction = $message->processPrompt();
 		}

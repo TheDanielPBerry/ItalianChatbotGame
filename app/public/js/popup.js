@@ -25,7 +25,6 @@ const ClickModal = (e) => {
 		CloseModal(overlay.id);
 		return;
 	}
-	console.log('ciao');
 };
 
 window.addEventListener('load', () => {

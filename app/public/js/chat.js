@@ -1,6 +1,7 @@
 var chatInput = document.getElementById('input');
 var chatHistory = document.getElementById('chat-history');
 var throbber = document.getElementById('throbber');
+var feedbackForm = document.getElementById('feedback-form');
 var currentChatDescriptor = null;
 
 const chatEndpoint = '/chat';
@@ -11,12 +12,26 @@ const ClearChatHistory = () => {
 };
 
 const ClickFeedback = (e) => {
-	let message_id = e.target.getAttribute('');
-	if(Number.isInteger(message_id) === false) {
+	let message_id = e.target.getAttribute('data-message-id');
+	if(Number.isNaN(parseInt(message_id))) {
 		return;
 	}
-	document.getElementById('feedback');
-	OpenModal('feedback_modal')
+	document.getElementById('feedback_message_id').value = message_id;
+	OpenModal('feedback_modal');
+};
+
+const SubmitFeedback = (e) => {
+	e.preventDefault();
+	let feedback_payload = Object.fromEntries(feedbackForm.querySelectorAll('input,select,textarea').entries().map(([_, element]) => [element.name, element.value]));
+	let feedback_type = document.getElementById('feedback_type');
+	if(feedback_payload['feedback_type'] == -1) {
+		feedback_type.classList.add('error');
+		return;
+	} else {
+		feedback_type.classList.remove('error');
+		feedback_type.value = -1;
+	}
+	CloseModal('feedback-modal');
 };
 
 const AddHistory = (message, user, message_id) => {
@@ -105,7 +120,7 @@ const SendMessage = (message, descriptor) => {
 		return response.json()
 	})
 	.then(resp => {
-		AddHistory(resp.grammar, 'chatbot')
+		AddHistory(resp.grammar, 'chatbot', resp.message_id)
 		throbber.classList.add('hide');
 	})
 	.catch(error => console.error(error));
@@ -123,6 +138,7 @@ chatInput.addEventListener('keypress', (e) => {
 		SendMessage(input, currentChatDescriptor);
 	}
 });
+feedbackForm.addEventListener('submit', SubmitFeedback)
 
 
 /**
@@ -132,4 +148,5 @@ const LoadChat = (chatDescriptor) => {
 	ClearChatHistory();
 	chatInput.focus();
 	currentChatDescriptor = chatDescriptor;
+	feedbackForm = document.getElementById('feedback-form');
 };
