@@ -91,6 +91,7 @@ textarea#input {
 	margin-right: auto;
 	margin-top: 1em;
 	cursor: pointer;
+	text-align: center;
 }
 #feedback-form textarea {
 	width: 90%;
@@ -112,4 +113,10 @@ textarea#input {
 }
 form .error {
 	border: 1px solid #E00;
+}
+#grammar {
+	background-color: #fff;
+	border-radius: 0.2em;
+	border: 1px solid #eee;
+	padding: 1em;
 }

@@ -7,11 +7,15 @@
 <canvas id="canvas" width="512" height="512"></canvas>
 <div id="chat">
 	<div id="chat-history">
-		<div class="dot-flashing" id="throbber"></div>
+		<div class="dot-flashing hide" id="throbber" style="float: left; clear: right;"></div>
 	</div>
 	<textarea id="input" rows="4" autofocus></textarea>
 </div>
-<div id="grammar-check">
+<hr>
+<div>
+	<h3>Grammatica</h3>
+	<p id="grammar">
+	</p>
 </div>
 
 <div class="overlay hide" id="feedback_modal">
@@ -30,6 +34,7 @@
 					<option value="1">Incorrect Grammar</option>
 					<option value="2">Suggest an Improvement</option>
 					<option value="3">Other</option>
+					<option value="5">Fuzz</option>
 				</select>
 				<textarea name="feedback" required maxlength="256"></textarea>
 				<button type="submit" id="submit-feedback">Submit Feedback</button>

@@ -5,7 +5,7 @@
 
 		<link rel="stylesheet" href="{{ url('/css/app.css') }}" />
 		<link rel="stylesheet" href="{{ url('/css/popup.css') }}" />
-		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+		<link rel="stylesheet" href="{{ url('/css/material-icons.css') }}" />
 
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 

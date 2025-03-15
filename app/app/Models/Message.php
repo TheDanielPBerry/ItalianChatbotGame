@@ -107,25 +107,37 @@ class Message extends Model
 
 	public function processPrompt()
 	{
+		$grammar_analysis = ChatGPT::CheckGrammar($this);
+		if(empty($grammar_analysis['error'])) {
+			$this->grammar_response = $grammar_analysis['output'][0]['content'][0]['text'];
+		} else {
+			$this->grammar_error = $grammar_analysis['error'];
+		}
+		if(trim(strtolower($this->grammar_response)) === 'english') {
+			$this->prediction = 'Mi dispiace, non so parlare inglese.';
+			$this->prediction_error = 'english';
+			return;
+		}
+
+
 		$messageResponse = $this->sendMessage();
 		if(empty($messageResponse['error'])) {
 			$this->intent = $messageResponse['latest_message']['intent']['name'];
 		} else {
-			$this->intent_message = $messageResponse['error'];
+			$this->message_error = $messageResponse['error'];
 		}
 
 		$predictionResponse = $this->getPrediction();
 		if(empty($predictionResponse['error'])) {
-			//$this->response = $this->;
-			//$this->action = ;
+			$this->response = json_encode($predictionResponse);
 		} else {
-			$this->prediction_error = $messageResponse['error'];
+			$this->prediction_error = $predictionResponse['error'];
 		}
-		return $predictionResponse;
+		$this->save();
 	}
 
 	public static function BelongsToConversation(User $user, int $id): bool
 	{
-		return empty(static::where('id', $id)->where('user_id', $user->id)->first()) !== false;
+		return empty(static::where('id', $id)->where('user_id', $user->id)->first()) === false;
 	}
 }

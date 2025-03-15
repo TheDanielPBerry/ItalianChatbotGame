@@ -2,9 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\ChatGPT;
 use App\Models\Feedback;
-use App\Models\FeedbackType;
 use App\Models\Message;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -52,28 +50,14 @@ class GameController extends Controller
 		$message->conversation_id = $conversationId;
 		$message->message = $validated['message'];
 
-
-
-		$grammar_analysis = ChatGPT::CheckGrammar($message);
-		if(empty($grammar_analysis['error'])) {
-			$message->grammar_response = $grammar_analysis['output'][0]['content'][0]['text'];
-		} else {
-			$message->grammar_response = '';
-		}
-		if(trim(strtolower($message->grammar_response)) === 'english') {
-			$prediction = 'Mi dispiace, non so parlare inglese.';
-			$grammar_response = '';
-		} else {
-			$prediction = $message->processPrompt();
-		}
-
-
-		$message->save();
+		$message->processPrompt();
 
 		$response = [
 			'message_id' => $message->id,
-			'prediction' => $prediction,
+			'prediction' => $message->prediction,
+			'prediction_error' => $message->prediction_error,
 			'grammar' => $message->grammar_response,
+			'grammar_error' => $message->grammar_error,
 		];
 		return response()->json($response);
 	}
@@ -83,14 +67,14 @@ class GameController extends Controller
 		$validator = Validator::make($request->all(), [
 			'feedback' => ['required', 'string', 'max:512'],
 			'message_id' => ['required', 'integer'],
-			'type' => ['required', 'integer'],
+			'feedback_type' => ['required', 'integer'],
 		]);
 		if($validator->fails()) {
-			return abort(422);
+			return response()->json(['errors' => $validator->errors()], 422);
 		}
 		$validated = $validator->validate();
-		if(is_null(FeedbackType::tryFrom($validated['type']))) {
-			return abort(422);
+		if($validated['feedback_type'] < 0 || $validated['feedback_type'] >= count(Feedback::FEEDBACK_TYPES)) {
+			return response()->json(['errors' => ["Invalid feedback type"]], 422);
 		}
 
 		if(!Auth::check()) {
@@ -100,13 +84,15 @@ class GameController extends Controller
 
 		//Verify user has access to the conversation
 		if(Message::BelongsToConversation($user, $validated['message_id']) === false) {
-			return abort(403);
+			return response()->json(['errors' => ['forbidden']], 403);
 		}
 
 		$feedback = new Feedback();
 		$feedback->user_id = $user->id;
 		$feedback->message_id = $validated['message_id'];
 		$feedback->feedback = $validated['feedback'];
-		$feedback->type = $validated['type'];
+		$feedback->type = $validated['feedback_type'];
+		$feedback->save();
+		return response()->json(['success' => 1]);
 	}
 }

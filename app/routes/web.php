@@ -18,4 +18,5 @@ Route::group(['middleware' => 'auth'], function () {
 
 	Route::get('/game', [GameController::class, 'game'])->name('game');
 	Route::post('/chat', [GameController::class, 'chat'])->name('chat');
+	Route::post('/feedback', [GameController::class, 'feedback'])->name('feedback');
 });

@@ -6,9 +6,10 @@ var currentChatDescriptor = null;
 
 const chatEndpoint = '/chat';
 
+const ParseForm = (form) => Object.fromEntries(form.querySelectorAll('input,select,textarea').entries().map(([_, element]) => [element.name, element.value]));
 
 const ClearChatHistory = () => {
-	chatHistory.innerHTML = '';
+	chatHistory.querySelectorAll('p').forEach((el) => el.remove());
 };
 
 const ClickFeedback = (e) => {
@@ -22,16 +23,39 @@ const ClickFeedback = (e) => {
 
 const SubmitFeedback = (e) => {
 	e.preventDefault();
-	let feedback_payload = Object.fromEntries(feedbackForm.querySelectorAll('input,select,textarea').entries().map(([_, element]) => [element.name, element.value]));
 	let feedback_type = document.getElementById('feedback_type');
+	let feedback_payload = ParseForm(feedbackForm);
 	if(feedback_payload['feedback_type'] == -1) {
 		feedback_type.classList.add('error');
 		return;
 	} else {
 		feedback_type.classList.remove('error');
-		feedback_type.value = -1;
 	}
-	CloseModal('feedback-modal');
+	feedbackForm.reset();
+
+	fetch('feedback', {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json',
+			'X-CSRF-Token': document.getElementById('chat-token').content,
+		},
+		body: JSON.stringify(feedback_payload),
+	})
+	.then(response => {
+		if(!response.ok) {
+			throw new Error(response.text());
+		}
+		return response.json()
+	})
+	.then(resp => {
+		if(resp.success === 1) {
+			SpawnNotification('Feedback Successfully Submitted', 1500);
+		} else {
+			SpawnNotification('Issue Submitting Feedback', 1500);
+		}
+	})
+	.catch(error => console.error(error))
+	.finally(() => CloseModal('feedback_modal'));
 };
 
 const AddHistory = (message, user, message_id) => {
@@ -61,43 +85,19 @@ const AddHistory = (message, user, message_id) => {
 	messageSpan.innerHTML = message;
 	paragraph.appendChild(messageSpan);
 
-	chatHistory.append(paragraph);
+	chatHistory.insertBefore(paragraph, throbber);
 	chatHistory.scrollHeight = '100%';
 	chatHistory.scrollBy({ top: chatHistory.scrollHeight, left: 1, behavior: 'smooth'});
 	setTimeout(() => chatHistory.scrollBy({ top: chatHistory.scrollHeight, left: 1, behavior: 'smooth'}), 500);
 };
 
-const SetGrammar = (message, user, message_id) => {
-	let paragraph = document.createElement('p');
-	paragraph.classList.add(user);
-	paragraph.classList.add('no-select');
-
-	if(user === 'chatbot') {
-		let flagButton = document.createElement('a');
-		flagButton.classList.add('flag-response');
-		flagButton.classList.add('material-icons');
-		flagButton.innerText = 'flag';
-		flagButton.title = 'Provide Feedback';
-		flagButton.setAttribute('data-message-id', message_id)
-		flagButton.addEventListener('click', ClickFeedback);
-		paragraph.appendChild(flagButton);
+const SetGrammar = (grammarAnalysis) => {
+	if(grammarAnalysis.toLowerCase() === 'yes') {
+		grammarAnalysis = '<b><span class="material-icons"></span>Corretto</b>';
+	} else if(grammarAnalysis.toLowerCase() === 'english') {
+		grammarAnalysis = '<b>Inglese?</b>';
 	}
-
-	if(user !== 'client') {
-		let chatDescriptorSpan = document.createElement('span');
-		chatDescriptorSpan.classList.add('chat-descriptor');
-		chatDescriptorSpan.innerText = currentChatDescriptor;
-		paragraph.appendChild(chatDescriptorSpan);
-	}
-
-	let messageSpan = document.createElement('span');
-	messageSpan.innerHTML = message;
-	paragraph.appendChild(messageSpan);
-
-	chatHistory.append(paragraph);
-	chatHistory.scrollHeight = '100%';
-	chatHistory.scrollBy({ top: chatHistory.scrollHeight, left: 1, behavior: 'smooth'});
-	setTimeout(() => chatHistory.scrollBy({ top: chatHistory.scrollHeight, left: 1, behavior: 'smooth'}), 500);
+	document.getElementById('grammar').innerHTML = grammarAnalysis;
 };
 
 const SendMessage = (message, descriptor) => {
@@ -120,7 +120,8 @@ const SendMessage = (message, descriptor) => {
 		return response.json()
 	})
 	.then(resp => {
-		AddHistory(resp.grammar, 'chatbot', resp.message_id)
+		AddHistory(resp.prediction, 'chatbot', resp.message_id);
+		SetGrammar(resp.grammar);
 		throbber.classList.add('hide');
 	})
 	.catch(error => console.error(error));
