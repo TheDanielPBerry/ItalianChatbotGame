@@ -1,4 +1,8 @@
-version: "3.0"
+networks:
+  api:
+    name: api
+    external: false
+
 services:
   VivaItaliana:
     container_name: VivaItaliana
@@ -13,4 +17,14 @@ services:
     ports: 
       - 80:80
       - 443:443
+    networks:
+      - api
+
+  rasa:
+    image: rasa/rasa:3.6.21-full
+    volumes:
+      - ./llm:/app
+    entrypoint: "sleep infinity"
+    networks:
+      - api
 

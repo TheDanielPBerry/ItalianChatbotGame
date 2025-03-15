@@ -12,5 +12,9 @@ RUN php /tmp/composer-setup.php --install-dir=/usr/local/bin --filename=composer
 
 RUN apt-get install -y git
 
+COPY docker/000-default.conf /etc/apache2/sites-available/000-default.conf
+
+RUN a2enmod rewrite
+
 RUN service apache2 start
 CMD ["apachectl", "-D", "FOREGROUND"]
