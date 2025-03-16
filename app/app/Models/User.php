@@ -2,7 +2,9 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use Carbon\Carbon;
+use App\Models\Message;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -45,5 +47,12 @@ class User extends Authenticatable
 			'email_verified_at' => 'datetime',
 			'password' => 'hashed',
 		];
+	}
+
+	public function shouldThrottle(): bool
+	{
+		$max_messages = env('MAX_NUMBER_OF_ALLOWED_MESSAGES_PER_DAY', Message::MAX_NUMBER_OF_ALLOWED_MESSAGES_PER_DAY);
+		$messages_today = Message::where('user_id', $this->id)->where('created_at', '>=', Carbon::now()->subDay()->toDateTimeString())->count();
+		return $messages_today >= $max_messages;
 	}
 }

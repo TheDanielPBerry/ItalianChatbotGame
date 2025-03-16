@@ -5,7 +5,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\GameController;
 use App\Http\Middleware\LoggedOut;
 
-Route::group(['middleware' => LoggedOut::class], function () {
+Route::group(['middleware' => [LoggedOut::class, 'throttle:global']], function () {
 	Route::get('/', [UserController::class, 'login'])->name('index');
 	Route::get('/login', [UserController::class, 'login'])->name('login');
 	Route::post('/login', [UserController::class, 'postLogin']);
@@ -13,7 +13,7 @@ Route::group(['middleware' => LoggedOut::class], function () {
 	Route::post('/register', [UserController::class, 'postRegister']);
 });
 
-Route::group(['middleware' => 'auth'], function () {
+Route::group(['middleware' => ['auth', 'throttle:global']], function () {
 	Route::get('/logout', [UserController::class, 'logout']);
 
 	Route::get('/game', [GameController::class, 'game'])->name('game');

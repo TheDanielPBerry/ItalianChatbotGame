@@ -75,7 +75,7 @@ class UserController extends Controller
 
 		$user = User::where('email', $validated['email'])->first();
 		if(!empty($user)) {
-			return redirect('register')->withInput()->withErrors(['User with email already exists'], 'register');
+			return redirect('register')->withInput()->withErrors(['A user with this email already exists'], 'register');
 		}
 
 		$user = new User();

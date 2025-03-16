@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Message extends Model
 {
 	private const RASA_BASE_URL = 'http://%s:%s/conversations/%s/%s?token=%s';
+	public const MAX_NUMBER_OF_ALLOWED_MESSAGES_PER_DAY = 80;
 	private string $host, $port, $token;
 
 	public function __construct()

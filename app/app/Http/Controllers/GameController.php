@@ -34,6 +34,9 @@ class GameController extends Controller
 		}
 
 		$user = Auth::user();
+		if($user->shouldThrottle()) {
+			return response()->json(['errors' => ['The maximum number of interactions has been reached for today.']], 429);
+		}
 
 		$validated = $validator->validate();
 		$conversationId = Message::GetConversationId($user->conversation_token, $validated['chat']);
@@ -81,6 +84,9 @@ class GameController extends Controller
 			return abort(401);
 		}
 		$user = Auth::user();
+		if(Feedback::shouldThrottle($user)) {
+			return response()->json(['errors' => ['The maximum number of feedback submissions has been reached for today.']], 429);
+		}
 
 		//Verify user has access to the conversation
 		if(Message::BelongsToConversation($user, $validated['message_id']) === false) {

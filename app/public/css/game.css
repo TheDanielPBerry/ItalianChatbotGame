@@ -22,14 +22,12 @@ textarea#input {
 }
 #chat {
 	display: inline-block;
+	width: 60%;
 }
 #chat-history {
 	overflow-x: hidden;
 	overflow-y: scroll;
-	max-height: 30vh;
-	min-height: 30vh;
-	max-width: 40vw;
-	min-width: 40vh;
+	height: 400px;
 }
 #chat-history p {
 	max-width: 80%;

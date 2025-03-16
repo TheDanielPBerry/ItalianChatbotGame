@@ -41,17 +41,12 @@ const SubmitFeedback = (e) => {
 		},
 		body: JSON.stringify(feedback_payload),
 	})
-	.then(response => {
-		if(!response.ok) {
-			throw new Error(response.text());
-		}
-		return response.json()
-	})
+	.then(response => response.json())
 	.then(resp => {
 		if(resp.success === 1) {
-			SpawnNotification('Feedback Successfully Submitted', 1500);
+			SpawnNotification('Feedback Successfully Submitted', 2000);
 		} else {
-			SpawnNotification('Issue Submitting Feedback', 1500);
+			SpawnNotification(resp.errors[0], 2000);
 		}
 	})
 	.catch(error => console.error(error))
@@ -93,7 +88,7 @@ const AddHistory = (message, user, message_id) => {
 
 const SetGrammar = (grammarAnalysis) => {
 	if(grammarAnalysis.toLowerCase() === 'yes') {
-		grammarAnalysis = '<b><span class="material-icons"></span>Corretto</b>';
+		grammarAnalysis = '<b><span class="material-icons" style="position: relative; top: 5px; left: -1px;">verified</span>Corretto</b>';
 	} else if(grammarAnalysis.toLowerCase() === 'english') {
 		grammarAnalysis = '<b>Inglese?</b>';
 	}
@@ -113,18 +108,20 @@ const SendMessage = (message, descriptor) => {
 		},
 		body: JSON.stringify(payload),
 	})
-	.then(response => {
-		if(!response.ok) {
-			throw new Error(response.text());
-		}
-		return response.json()
-	})
+	.then(response => response.json())
 	.then(resp => {
-		AddHistory(resp.prediction, 'chatbot', resp.message_id);
-		SetGrammar(resp.grammar);
-		throbber.classList.add('hide');
+		if(resp.errors) {
+			let tmp = currentChatDescriptor;
+			currentChatDescriptor = 'La Vita Italiana';
+			AddHistory(resp.errors[0], 'narrator', resp.message_id);
+			currentChatDescriptor = tmp;
+		} else {
+			AddHistory(resp.prediction, 'chatbot', resp.message_id);
+			SetGrammar(resp.grammar);
+		}
 	})
-	.catch(error => console.error(error));
+	.catch(error => console.error(error))
+	.finally(() => throbber.classList.add('hide'));
 };
 
 chatInput.addEventListener('keypress', (e) => {
