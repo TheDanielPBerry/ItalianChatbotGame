@@ -273,17 +273,14 @@ header #account-menu::after {
 }
 
 #survey-form {
-	display: grid;
-	flex-direction: column;
-	margin-left: auto;
-	margin-right: auto;
+	display: block;
 	width: 100%;
-	grid-template-columns: auto auto auto auto auto auto auto auto auto auto auto auto;
 	font-size: 1.2em;
-	row-gap: 1.5em;
-	column-gap: 0.5em;
-	padding: 2em;
+	padding: 0.5em;
 	border-radius: 0.3em;
+}
+#survey-form ol {
+	padding-inline-start: 15px;
 }
 #survey-form>ol>li {
 	margin-bottom: 2em;
@@ -292,7 +289,6 @@ header #account-menu::after {
 	margin-bottom: 1em;
 }
 #survey-form .error-container {
-	grid-column: 1/12;
 	color: red;
 	text-align:center;
 }
@@ -300,11 +296,23 @@ header #account-menu::after {
 	padding: 0.4em;
 	color: black;
 	text-align: right;
-	grid-column: 1/12;
 }
 #survey-form input {
 	padding: 0.4em;
 	font-size: 1.2em;
 	display: block;
-	width: 100%;
+	width: 90%;
+}
+#survey-form button {
+	display: block;
+	background-color: #222299;
+	color: #fff;
+	border: 0px;
+	padding: 0.6em;
+	border-radius: 0.2em;
+	cursor: pointer;
+	width: 50%;
+	font-size: 1.1em;
+	margin-left: auto;
+	margin-right: auto;
 }

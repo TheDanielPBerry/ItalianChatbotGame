@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Feedback;
 use App\Models\Message;
+use App\Models\Rasa;
+use App\Models\Survey;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -11,12 +13,21 @@ use Illuminate\Support\Facades\Validator;
 
 class GameController extends Controller
 {
+	public function test()
+	{
+		$rasa = new Rasa();
+	}
+
 	public function game()
 	{
 		if(!Auth::check()) {
 			return redirect('/');
 		}
-		return view('game');
+		$user = Auth::user();
+		$viewbag = [
+			'surveyed' => empty($user->survey) ? 0 : 1,
+		];
+		return view('game', $viewbag);
 	}
 
 	public function chat(Request $request)
@@ -53,14 +64,21 @@ class GameController extends Controller
 		$message->conversation_id = $conversationId;
 		$message->message = $validated['message'];
 
-		$message->processPrompt();
+		$actions = $message->processPrompt();
+		if(isset($actions['error'])) {
+			//Do nothing right now
+		}
 
 		$response = [
 			'message_id' => $message->id,
-			'prediction' => $message->prediction,
+			'intent' => $message->intent,
+			'message_error' => $message->message_error,
+			'action' => $message->action,
 			'prediction_error' => $message->prediction_error,
+			'response' => $message->response,
 			'grammar' => $message->grammar_response,
 			'grammar_error' => $message->grammar_error,
+			'actions' => $actions,
 		];
 		return response()->json($response);
 	}
@@ -99,6 +117,39 @@ class GameController extends Controller
 		$feedback->feedback = $validated['feedback'];
 		$feedback->type = $validated['feedback_type'];
 		$feedback->save();
+		return response()->json(['success' => 1]);
+	}
+
+
+	public function survey(Request $request)
+	{
+		$validator = Validator::make($request->all(), [
+			'out_of_place_dialogue' => ['string', 'max:512'],
+			'progression_of_speech' => ['string', 'max:512'],
+			'lost_steps' => ['string', 'max:512'],
+			'recommendations' => ['string', 'max:512'],
+			'unclear_instruction' => ['string', 'max:512'],
+			'satisfaction' => ['string', 'max:512'],
+			'desired_interactions' => ['string', 'max:512'],
+		]);
+		if($validator->fails()) {
+			return response()->json(['errors' => $validator->errors()], 422);
+		}
+		$validated = $validator->validate();
+
+		if(!Auth::check()) {
+			return abort(401);
+		}
+		$user = Auth::user();
+		if(!empty($user->survey)) {
+			return response()->json(['errors' => ['User has already submitted a survey.']], 208);
+		}
+
+
+		$survey = new Survey();
+		$survey->user_id = $user->id;
+		$survey->content = json_encode($validated, JSON_INVALID_UTF8_SUBSTITUTE);
+		$survey->save();
 		return response()->json(['success' => 1]);
 	}
 }

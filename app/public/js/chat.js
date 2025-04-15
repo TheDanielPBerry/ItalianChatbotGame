@@ -1,4 +1,5 @@
 var chatInput = document.getElementById('input');
+var sendButton = document.getElementById('send');
 var chatHistory = document.getElementById('chat-history');
 var throbber = document.getElementById('throbber');
 var feedbackForm = document.getElementById('feedback-form');
@@ -116,7 +117,7 @@ const SendMessage = (message, descriptor) => {
 			AddHistory(resp.errors[0], 'narrator', resp.message_id);
 			currentChatDescriptor = tmp;
 		} else {
-			AddHistory(resp.prediction, 'chatbot', resp.message_id);
+			AddHistory(resp.response, 'chatbot', resp.message_id);
 			SetGrammar(resp.grammar);
 		}
 	})
@@ -124,25 +125,47 @@ const SendMessage = (message, descriptor) => {
 	.finally(() => throbber.classList.add('hide'));
 };
 
+const SubmitChat = (input) => {
+	AddHistory(input, 'client');
+	chatInput.value = '';
+
+	throbber.classList.remove('hide');
+	SendMessage(input, currentChatDescriptor);
+};
+
+
+
+//Events
+sendButton.addEventListener('click', (e) => {
+	let input = chatInput.value.trim();
+	if(input.trim() != '') {
+		SubmitChat(input);
+	}
+});
 chatInput.addEventListener('keypress', (e) => {
 	let input = chatInput.value.trim();
 	if(e.keyCode == 13 && !e.shiftKey && input.trim() != '') {
 		e.preventDefault();
-
-		AddHistory(input, 'client');
-		chatInput.value = '';
-
-		throbber.classList.remove('hide');
-		SendMessage(input, currentChatDescriptor);
+		SubmitChat(input);
 	}
 });
 feedbackForm.addEventListener('submit', SubmitFeedback)
 
+const ToggleChat = (flag) => {
+	if(flag) {
+		sendButton.removeAttribute('disabled');
+		chatInput.removeAttribute('disabled');
+	} else {
+		sendButton.disabled = 'disabled';
+		chatInput.disabled = 'disabled';
+	}
+};
 
 /**
  * @param chatDescriptor string
  */
 const LoadChat = (chatDescriptor) => {
+	ToggleChat(true);
 	ClearChatHistory();
 	chatInput.focus();
 	currentChatDescriptor = chatDescriptor;

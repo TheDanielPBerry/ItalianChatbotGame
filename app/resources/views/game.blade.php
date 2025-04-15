@@ -9,7 +9,10 @@
 	<div id="chat-history">
 		<div class="dot-flashing hide" id="throbber" style="float: left; clear: right;"></div>
 	</div>
-	<textarea id="input" rows="4" autofocus></textarea>
+	<textarea id="input" rows="4" autofocus disabled></textarea>
+	<div style="text-align: right;">
+		<button class="material-icons" id="send" disabled>send</button>
+	</div>
 </div>
 <hr>
 <div>
@@ -71,11 +74,13 @@
 <div class="overlay hide" id="survey_modal">
 	<div class="modal">
 		<div class="modal-title">
-			Please Consider Taking this Short Freeform Survey
+			Please Consider Taking<br/>
+			this Short Freeform Survey
 			<span class="modal-close material-icons">close</span>
 		</div>
 		<div class="modal-body">
 			<form id="survey-form">
+				<input type="hidden" id="surveyed" name="surveyed" value="{{ $surveyed }}" />
 				<ol>
 					<li>
 						<ol style="list-style-type: lower-alpha;">
@@ -83,13 +88,13 @@
 								<label>
 									Did you experience any out of place dialogue during the interactions?
 								</label>
-								<input type="text" name="out_of_place_dialogue" />
+								<input type="text" name="out_of_place_dialogue" maxlength="512" />
 							</li>
 							<li>
 								<label>
 									If so, do you feel as it was a natural progression of speech?
 								</label>
-								<input type="text" name="progression_of_speech" />
+								<input type="text" name="progression_of_speech" maxlength="512" />
 							</li>
 						</ol>
 					</li>
@@ -99,13 +104,13 @@
 								<label>
 									Did you ever get stuck or not know what steps to take next?
 								</label>
-								<input type="text" name="out_of_place_dialogue" />
+								<input type="text" name="lost_steps" maxlength="512" />
 							</li>
 							<li>
 								<label>
 									Do you have any recommendations on how you would improve?
 								</label>
-								<input type="text" name="progression_of_speech" />
+								<input type="text" name="recommendations" maxlength="512" />
 							</li>
 						</ol>
 					</li>
@@ -115,13 +120,7 @@
 								<label>
 									Were the instructions ever unclear when using the application?
 								</label>
-								<input type="text" name="out_of_place_dialogue" />
-							</li>
-							<li>
-								<label>
-									Do you feel as though your Italian conversation skills has improved?
-								</label>
-								<input type="text" name="out_of_place_dialogue" />
+								<input type="text" name="unclear_instruction" maxlength="512" />
 							</li>
 						</ol>
 					</li>
@@ -129,9 +128,9 @@
 						<ol style="list-style-type: lower-alpha;">
 							<li>
 								<label>
-									Do you feel as though your Italian conversation skills has improved?
+									Do you feel as though your Italian conversation skills have improved?
 								</label>
-								<input type="text" name="out_of_place_dialogue" />
+								<input type="text" name="satisfaction" maxlength="512" />
 							</li>
 						</ol>
 					</li>
@@ -141,11 +140,12 @@
 								<label>
 									What types of interactions were missing that would you like to be able to practice?
 								</label>
-								<input type="text" name="out_of_place_dialogue" />
+								<input type="text" name="desired_interactions" maxlength="512" />
 							</li>
 						</ol>
 					</li>
 				</ol>
+				<button type="submit" id="submit-survey">Submit</button>
 			</form>
 		</div>
 	</div>
@@ -155,4 +155,5 @@
 <script src="{{ url('js/scenes.js') }}"></script>
 <script src="{{ url('js/chat.js') }}"></script>
 <script src="{{ url('js/game.js') }}"></script>
+<script src="{{ url('js/survey.js') }}"></script>
 @endsection

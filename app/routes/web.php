@@ -18,5 +18,8 @@ Route::group(['middleware' => ['auth', 'throttle:global']], function () {
 
 	Route::get('/game', [GameController::class, 'game'])->name('game');
 	Route::post('/chat', [GameController::class, 'chat'])->name('chat');
+	Route::get('/chat', [GameController::class, 'chat'])->name('chat');
 	Route::post('/feedback', [GameController::class, 'feedback'])->name('feedback');
+	Route::post('/survey', [GameController::class, 'survey'])->name('survey');
+
 });

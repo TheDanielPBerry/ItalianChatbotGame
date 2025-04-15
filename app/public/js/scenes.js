@@ -1,3 +1,12 @@
+const exitSurvey = (returnScene) => {
+	return () => {
+		if(document.getElementById('surveyed').value !== '1') {
+			OpenModal('survey_modal');
+		}
+		return returnScene();
+	}
+};
+
 const scenes = {
 	'residential': () => {
 		wipe.x = -canvas.x;
@@ -30,7 +39,7 @@ const scenes = {
 	'butcher': () => {
 		scene = [];
 		scene.push(new Artifact(null, new Rect(0, 0, null, null), "/img/characters/butcher.png"));
-		scene.push(new Interactive(null, new Rect(440, 8, null, null), "/img/ciao.png", "Abbandonare la Conversazione", scenes['grocery']));
+		scene.push(new Interactive(null, new Rect(440, 8, null, null), "/img/ciao.png", "Abbandonare la Conversazione", exitSurvey(scenes['grocery'])));
 		clickEvent = null;
 		LoadChat('Macellaio');
 		AddHistory('Ciao!', 'chatbot', 0);
@@ -38,7 +47,7 @@ const scenes = {
 	'clerk': () => {
 		scene = [];
 		scene.push(new Artifact(null, new Rect(0, 0, null, null), "/img/characters/clerk.png"));
-		scene.push(new Interactive(null, new Rect(440, 8, null, null), "/img/ciao.png", "Abbandonare la Conversazione", scenes['grocery']));
+		scene.push(new Interactive(null, new Rect(440, 8, null, null), "/img/ciao.png", "Abbandonare la Conversazione", exitSurvey(scenes['grocery'])));
 		clickEvent = null;
 		LoadChat('Cassiere');
 		AddHistory('Ciao! Com\'era il tuo esperianza oggi?', 'chatbot', 0);

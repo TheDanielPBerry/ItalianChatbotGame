@@ -6,6 +6,7 @@ namespace App\Models;
 use Carbon\Carbon;
 use App\Models\Message;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -54,5 +55,10 @@ class User extends Authenticatable
 		$max_messages = env('MAX_NUMBER_OF_ALLOWED_MESSAGES_PER_DAY', Message::MAX_NUMBER_OF_ALLOWED_MESSAGES_PER_DAY);
 		$messages_today = Message::where('user_id', $this->id)->where('created_at', '>=', Carbon::now()->subDay()->toDateTimeString())->count();
 		return $messages_today >= $max_messages;
+	}
+
+	public function survey(): HasOne
+	{
+		return $this->hasOne(Survey::class);
 	}
 }
