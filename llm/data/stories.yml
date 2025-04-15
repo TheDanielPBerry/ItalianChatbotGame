@@ -2,29 +2,155 @@ version: "3.1"
 
 stories:
 
-- story: butcher
+- story: Maccellaio
   steps:
   - intent: greet
   - action: utter_greet
+  - intent: inquire_mood
+  - action: utter_mood
   - intent: mood_great
-  - action: utter_happy
+  - action: utter_servant 
+  - intent: inquire_selection
+  - action: utter_selection
+  - intent: inquire_price
+  - action: utter_price
 
-- story: sad path 1
+
+- story: interactive_story_0
+  steps:
+  - intent: request_order
+    entities:
+    - amount: due
+    - unit: grammi
+    - item: prosciutto
+    - item_type: cotto
+  - slot_was_set:
+    - item_weight: due
+  - slot_was_set:
+    - item_name: prosciutto
+  - slot_was_set:
+    - item_type: cotto
+  - action: butcher_form
+  - active_loop: butcher_form
+  - slot_was_set:
+    - item_weight: due
+  - slot_was_set:
+    - item_name: prosciutto
+  - slot_was_set:
+    - item_type: cotto
+  - slot_was_set:
+    - requested_slot: null
+  - active_loop: null
+  - action: utter_anything_else
+  - intent: deny
+  - action: utter_goodbye
+
+
+
+
+- story: interactive_story_1
   steps:
   - intent: greet
   - action: utter_greet
-  - intent: mood_unhappy
-  - action: utter_cheer_up
-  - action: utter_did_that_help
-  - intent: affirm
-  - action: utter_happy
+  - intent: inquire_selection
+  - action: utter_selection
+  - intent: request_order
+    entities:
+    - item: prosciutto
+  - slot_was_set:
+    - item_name: prosciutto
+  - action: butcher_form
+  - active_loop: butcher_form
+  - slot_was_set:
+    - item_name: prosciutto
+  - slot_was_set:
+    - requested_slot: item_weight
+  - intent: inform
+  - intent: inform
+    entities:
+    - unit: chilogrammi
+  - action: butcher_form
+  - active_loop: butcher_form
+  - slot_was_set:
+    - item_name: prosciutto
+  - slot_was_set:
+    - requested_slot: item_weight
+  - intent: inform
+    entities:
+    - unit: chilogrammi
+  - intent: inform
+    entities:
+    - amount: '36.2'
+    - unit: chilogrammi
+  - active_loop: null
+  - action: utter_anything_else
+  - intent: deny
+  - action: utter_goodbye
 
-- story: sad path 2
+- story: interactive_story_2
   steps:
-  - intent: greet
-  - action: utter_greet
-  - intent: mood_unhappy
-  - action: utter_cheer_up
-  - action: utter_did_that_help
+  - intent: inquire_price
+    entities:
+    - item: prosciutto
+  - slot_was_set:
+    - item_name: prosciutto
+  - action: utter_price
+  - intent: inquire_selection
+  - action: utter_selection
+  - intent: affirm_purchase
+  - action: butcher_form
+  - active_loop: butcher_form
+  - slot_was_set:
+    - requested_slot: item_type
+  - intent: inform
+    entities:
+    - item_type: cotto
+  - slot_was_set:
+    - item_type: cotto
+  - action: butcher_form
+  - slot_was_set:
+    - requested_slot: item_weight
+  - intent: inform
+  - intent: inform
+    entities:
+    - amount: '44'
+  - intent: inform
+    entities:
+    - amount: due
+  - slot_was_set:
+    - item_weight: due
+  - active_loop: null
+  - action: utter_anything_else
+  - intent: deny
+  - action: utter_goodbye
+
+- story: interactive_story_3
+  steps:
+  - intent: request_order
+    entities:
+    - item: prosicutto
+    - item_type: crudo
+  - slot_was_set:
+    - item_name: prosicutto
+  - slot_was_set:
+    - item_type: crudo
+  - action: butcher_form
+  - active_loop: butcher_form
+  - slot_was_set:
+    - item_name: prosicutto
+  - slot_was_set:
+    - item_type: crudo
+  - slot_was_set:
+    - requested_slot: item_weight
+  - intent: inform
+    entities:
+    - amount: due
+  - slot_was_set:
+    - item_weight: due
+  - action: butcher_form
+  - slot_was_set:
+    - requested_slot: null
+  - active_loop: null
+  - action: utter_anything_else
   - intent: deny
   - action: utter_goodbye

@@ -1,71 +1,101 @@
 version: "3.1"
-
 nlu:
-- intent: greet_stranger
+- intent: greet
   examples: |
     - ciao
     - Buonasera
     - Buongiorno
-
+    - Ciao!
+    - Ciao
+    - Ciao bello!
+    - Ciao ragazzi!
 - intent: goodbye
   examples: |
-    - ciao
     - a dopo
     - Arrivederci
-
+    - Grande. Arrivederci
 - intent: affirm
   examples: |
+    - Sì
+    - Certo
+    - Certamente
+    - Allora
     - Si
-
-- intent: inquire_prosciutto
+- intent: inquire_mood
   examples: |
-    - Quali tipi di proscitto vendete?
-
+    - Come va?
+    - Come sei?
+    - Che va?
+    - Ciao come stai?
+- intent: inquire_selection
+  examples: |
+    - Quali tipi di [prosciutto](item) vendete?
+    - Cosa vendi oggi?
+    - Quali tipi di [prosciutto](item) venditi?
+    - Hai [prosciutto](item) [cotto](item_type)?
+    - Cosa hai oggi per vendere?
 - intent: inquire_price
   examples: |
-    - Quanta costa il proscitto crudo?
-
+    - Quanta costa il [proscitto](item) [crudo](item_type)?
+    - Quanto devo pagare?
+    - Quanta costa il [prosciutto](item) [cotto](item_type)?
+    - Quanta costa il carne?
+    - Quanta costa?
+    - Quanto costa il tuo [prosciutto](item)?
+    - Cosa e la costa del [prosciutto](item)?
 - intent: deny
   examples: |
     - no
-
+    - niente
+    - exit
+    - No
+    - Niente
 - intent: mood_great
   examples: |
-    - perfect
-    - great
-    - amazing
-    - feeling like a king
-    - wonderful
-    - I am feeling very good
-    - I am great
-    - I am amazing
-    - I am going to save the world
-    - super stoked
-    - extremely good
-    - so so perfect
-    - so good
-    - so perfect
-
+    - Sono bene
+    - Grande
+    - Bennissimo
 - intent: mood_unhappy
   examples: |
-    - my day was horrible
-    - I am sad
-    - I don't feel very well
-    - I am disappointed
-    - super sad
-    - I'm so sad
-    - sad
-    - very sad
-    - unhappy
-    - not good
-    - not very good
-    - extremly sad
-    - so saad
-    - so sad
-
+    - Sono triste.
+    - mesto
+    - doloroso
 - intent: bot_challenge
   examples: |
     - are you a bot?
     - are you a human?
     - am I talking to a bot?
     - am I talking to a human?
+    - Sei un bot?
+    - Sei un chatbot?
+- intent: request_order
+  examples: |
+    - Posso avere [tredici](amount) [grammi](unit) del [prosciutto](item) [crudo](item_type)?
+    - Posso avere [prosciutto](item)?
+    - [Prosciutto](item_type) [crudo](item_type) per favore.
+    - Vorrei il [prosicutto](item) [cotto](item_type).
+    - Vorrei il [prosciutto](item).
+    - Vorrei [due](amount) [grammi](unit) del [prosciutto](item) [cotto](item_type).
+    - Prendo il [prosciutto](item).
+    - Ciao. Posso provare il tuo [prosicutto](item) [crudo](item_type)?
+- intent: inform
+  examples: |
+    - Prendo [due](amount) [chilogrammi](unit) per favore.
+    - Il [prosciutto](item) [cotto](item_type)
+    - [Crudo](item_type)
+    - [Cotto](item_type)
+    - Il [crudo](item_type)
+    - [36.2](amount)
+    - [36.2](amount) [chilogrammi](unit) per favore
+    - [Cotto]{"entity": "item_type", "value": "cotto"}
+    - [44](amount)
+    - [due](amount)
+    - [due](amount) [chilogrammi](unit)
+- intent: affirm_purchase
+  examples: |
+    - Quindi, lo prendo.
+    - Sì, lo prendo.
+    - Bene, lo prendo.
+- synonym: cotto
+  examples: |
+    - Cotto

@@ -1,34 +1,100 @@
-version: "3.1"
-
+version: '3.1'
 intents:
-  - greet
-  - goodbye
-  - affirm
-  - deny
-  - mood_great
-  - mood_unhappy
-  - bot_challenge
-
+- affirm
+- affirm_purchase
+- bot_challenge
+- deny
+- goodbye
+- greet
+- inform
+- inquire_mood
+- inquire_price
+- inquire_selection
+- mood_great
+- mood_unhappy
+- request_order
 responses:
+  utter_affirm:
+  - text: Sì
   utter_greet:
-  - text: "Hey! How are you?"
-
-  utter_cheer_up:
-  - text: "Here is something to cheer you up:"
-    image: "https://i.imgur.com/nGF1K8f.jpg"
-
-  utter_did_that_help:
-  - text: "Did that help you?"
-
+  - text: Ciao!
+  utter_servant:
+  - text: Come posso aiutarla?
+  utter_chitchat:
+  - text: Sto bene.
   utter_happy:
-  - text: "Great, carry on!"
-
+  - text: Bene.
+  utter_mood:
+  - text: Bene. E tu?
   utter_goodbye:
-  - text: "Bye"
-
+  - text: Ciao
   utter_iamabot:
-  - text: "I am a bot, powered by Rasa."
-
+  - text: Sono un chatbot, progettato per aiutare a praticare l'italiano
+  utter_selection:
+  - text: Ci sono due tipi di prosciutto, cotto e crudo
+  utter_price:
+  - text: Il proscittio cotto costa quattro punta diciotto e il crudo è tre punta venticinque.
+  utter_sorry:
+  - text: Che peccato
+  utter_affirm_certo:
+  - text: Certo.
+  utter_ask_mood:
+  - text: E come stai?
+  utter_ask_butcher_form_item_type:
+  - text: Quale tipo?
+  utter_ask_butcher_form_item_weight:
+  - text: Quanti chilogrammi voresti?
+  utter_ask_butcher_form_item_name:
+  - text: Cosa voresti?
+  utter_anything_else:
+  - text: Qualunque altra?
 session_config:
   session_expiration_time: 60
   carry_over_slots_to_new_session: true
+actions:
+- utter_goodbye
+- utter_anything_else
+- utter_price
+- utter_selection
+- utter_mood
+- utter_greet
+- utter_happy
+- utter_affirm
+- utter_chitchat
+- utter_sorry
+- utter_affirm_certo
+- utter_ask_item_type
+- utter_ask_item_weight
+- utter_ask_item
+entities:
+- item
+- amount
+- item_type
+- name
+slots:
+  item_weight:
+    type: float
+    mappings:
+    - type: from_entity
+      entity: amount
+  item_name:
+    type: categorical
+    values:
+    - prosciutto
+    mappings:
+    - type: from_entity
+      entity: item
+  item_type:
+    type: categorical
+    values:
+    - cotto
+    - crudo
+    mappings:
+    - type: from_entity
+      entity: item_type
+forms:
+  butcher_form:
+    required_slots:
+    - item_name
+    - item_type
+    - item_weight

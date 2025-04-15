@@ -4,10 +4,42 @@ rules:
 
 - rule: Say goodbye anytime the user says goodbye
   steps:
-  - intent: goodbye
-  - action: utter_goodbye
+  - intent: greet
+  - action: utter_greet
 
 - rule: Say 'I am a bot' anytime the user challenges
   steps:
   - intent: bot_challenge
   - action: utter_iamabot
+
+
+- rule: Ask Price
+  steps:
+  - intent: inquire_price
+  - action: utter_price
+
+- rule: Ask mood
+  steps:
+  - intent: inquire_mood
+  - action: utter_mood
+
+- rule: Ask selection
+  steps:
+  - intent: inquire_selection
+  - action: utter_selection
+
+- rule: activate butcher_form
+  steps:
+  - intent: request_order
+  - action: butcher_form
+  - active_loop: butcher_form
+
+- rule: submit butcher_form
+  condition:
+  - active_loop: butcher_form
+  steps:
+    - action: butcher_form
+    - active_loop: null
+    - slot_was_set:
+      - requested_slot: null
+    - action: utter_anything_else
