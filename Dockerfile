@@ -13,6 +13,10 @@ RUN php /tmp/composer-setup.php --install-dir=/usr/local/bin --filename=composer
 RUN apt-get install -y git
 
 COPY docker/000-default.conf /etc/apache2/sites-available/000-default.conf
+RUN apt-get install -y vim
+RUN apt-get install libyaml-dev -y
+RUN pecl install yaml && echo "extension=yaml.so" > /usr/local/etc/php/conf.d/ext-yaml.ini 
+RUN docker-php-ext-enable yaml
 
 RUN a2enmod rewrite
 

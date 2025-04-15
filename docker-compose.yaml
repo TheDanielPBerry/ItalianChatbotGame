@@ -14,6 +14,7 @@ services:
     volumes: 
       - ./app:/var/www/html
       - ./db:/var/www/db
+      - ./llm:/llm/
     ports: 
       - 80:80
       - 443:443
