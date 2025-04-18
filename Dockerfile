@@ -12,13 +12,25 @@ RUN php /tmp/composer-setup.php --install-dir=/usr/local/bin --filename=composer
 
 RUN apt-get install -y git
 
-COPY docker/000-default.conf /etc/apache2/sites-available/000-default.conf
 RUN apt-get install -y vim
 RUN apt-get install libyaml-dev -y
 RUN pecl install yaml && echo "extension=yaml.so" > /usr/local/etc/php/conf.d/ext-yaml.ini 
 RUN docker-php-ext-enable yaml
 
+COPY docker/000-default.conf /etc/apache2/sites-available/000-default.conf
+COPY docker/danielberry.tech.conf /etc/apache2/sites-available/danielberry.tech.conf
+
+
+RUN find . -type d -exec chmod 755 {} \;
+RUN find . -type f -exec chmod 644 {} \;
+RUN chown -R www-data:www-data ./
+
+COPY ./certs/ /certs
+
+
 RUN a2enmod rewrite
+RUN a2ensite danielberry.tech
+RUN a2enmod ssl
 
 RUN service apache2 start
 CMD ["apachectl", "-D", "FOREGROUND"]

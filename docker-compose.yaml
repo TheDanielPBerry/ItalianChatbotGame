@@ -15,6 +15,7 @@ services:
       - ./app:/var/www/html
       - ./db:/var/www/db
       - ./llm:/llm/
+      - ./certs:/certs/
     ports: 
       - 80:80
       - 443:443
