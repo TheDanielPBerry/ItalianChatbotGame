@@ -28,7 +28,7 @@ const scenes = {
 		//Interactives
 		scene.push(new Interactive(null, new Rect(0, 0, null, null), "/img/grocery/butcher.png", "Macellaio", scenes['butcher']));
 		scene.push(new Interactive(null, new Rect(0, 0, null, null), "/img/grocery/exit.png", "Uscita", scenes['residential']));
-		scene.push(new Interactive(null, new Rect(0, 0, null, null), "/img/grocery/cashier.png", "Casse", scenes['clerk']));
+		scene.push(new Interactive(null, new Rect(0, 0, null, null), "/img/grocery/cashier.png", "Casse"));
 
 		scene.push(new Interactive(null, new Rect(0, 0, null, null), "/img/grocery/vino.png", "Vino"));
 		scene.push(new Interactive(null, new Rect(0, 0, null, null), "/img/grocery/formaggio.png", "Formaggio"));

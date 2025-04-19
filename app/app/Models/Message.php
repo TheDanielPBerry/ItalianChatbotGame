@@ -167,11 +167,6 @@ class Message extends Model
 		} else {
 			$this->grammar_error = json_encode($grammar_analysis['error']);
 		}
-		if(trim(strtolower($this->grammar_response)) === 'english') {
-			$this->prediction = 'Mi dispiace, non so parlare inglese.';
-			$this->prediction_error = 'english';
-			return ['error' => $this->prediction_error];
-		}
 
 
 		$messageResponse = $this->sendMessage();
