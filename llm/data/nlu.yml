@@ -91,6 +91,7 @@ nlu:
     - [44](amount)
     - [due](amount)
     - [due](amount) [chilogrammi](unit)
+      [cotto](item_type)
 - intent: affirm_purchase
   examples: |
     - Quindi, lo prendo.

@@ -200,8 +200,22 @@ class Message extends Model
 				break;
 			}
 			$form = 'butcher_form';
-			if($this->action === 'butcher_form') {
+			if($this->action === $form) {
+				$actions[] = $form;
+				$execution = $this->executeAction($form);
 				$slot = $execution['tracker']['slots']['requested_slot'];
+				$hasEmptySlots = false;
+				if(empty($slot)) {
+					foreach($execution['tracker']['slots'] as $key => $slot) {
+						if(!in_array($key, ['requested_slot', 'session_started_metadata']) && empty($slot)) {
+							$hasEmptySlots = true;
+							break;
+						}
+					}
+					if($hasEmptySlots === true) {
+						$slot = $execution['tracker']['slots']['requested_slot'];
+					}
+				}
 				if(empty($slot)) {
 					$this->action = 'utter_anything_else';
 				} else {
@@ -213,9 +227,13 @@ class Message extends Model
 					}
 					$this->action = $latestAction;
 				}
+				$actions[] = $this->action;
+				$execution = $this->executeAction($this->action);
+				$this->response = $rasa->getActionText($this->action);
+				break;
 			}
 
-			$this->response = $rasa->getActionText($latestAction);
+			$this->response = $rasa->getActionText($this->action);
 		}
 		$this->save();
 		return $actions;
